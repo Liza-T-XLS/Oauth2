@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+header {
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+}
+
+main {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+p {
+  margin: 1rem;
+}
+
+.OauthLink {
+  display: block;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  width: min-content;
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+}
+
+.OauthLink.discord {
+  background-color: #778ddb;
+}
+
+.OauthLink.google {
+  background-color: #009688;
+}
+
+footer {
+  margin: 2rem;
+  text-align: center;
+}
