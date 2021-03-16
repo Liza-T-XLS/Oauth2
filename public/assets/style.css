@@ -13,6 +13,11 @@ header {
   text-align: center;
 }
 
+header a {
+  text-decoration: none;
+  color: black;
+}
+
 main {
   margin: 2rem;
   display: flex;

@@ -10,5 +10,6 @@
 </head>
 <body>
     <header>
-        <h1>Oauth2</h1>
+        <h1><a href="/" title="home">Oauth2</a></h1>
     </header>
+    <main>

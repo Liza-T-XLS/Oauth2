@@ -2,31 +2,37 @@
 
 require_once '../vendor/autoload.php';
 
-$router = new AltoRouter();
+// to enable the use of the .env
+$dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT'] . '/..');
+$dotenv->load();
 
-$router->map(
-    'GET',
-    '/',
-    ['controller' => 'CoreController', 'method' => 'show', ],
-    'home'
-);
+// router
+$request = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
+$requestData = array('request' => $request, 'method' => $method);
 
-// match current request url
-$match = $router->match();
-
-// if no match throw 404 status
-if(!is_array($match)) {
-    header('HTTP/1.0 404 Not Found');
-    exit('404 Not Found');
+switch ($requestData) {
+    case ['request' => '/', 'method' => 'GET']:
+        $controllerToUse = 'MainController';
+        $methodToUse = 'home';
+        break;
+        // expected URI is /connect?=<code provided by Discord>, so to make the route match without knowing in advance what the code will be, preg_match is used
+        // if the string matches the regex, the return value is 1, else it is 0
+    case ['request' => preg_match('/\/connect\?(.*)/', $requestData['request']) == 1, 'method' => 'GET']:
+        $controllerToUse = 'MainController';
+        $methodToUse = 'exchange';
+        break;
+    case ['request' => '/secret', 'method' => 'GET']:
+        $controllerToUse = 'MainController';
+        $methodToUse = 'secret';
+        break;
+    default:
+        http_response_code(404);
+        header('HTTP/1.0 404 Not Found');
+        exit('404 Not Found');
+        break;
 }
-// else the script continues
-// retrieves name of the controller to use
-$controllerToUse = $match['target']['controller'];
-// retrieves name of the method to use
-$methodToUse = $match['target']['method'];
 
 $controllerToUse = 'App\\controllers\\' . $controllerToUse;
-
 $controller = new $controllerToUse();
-
-$controller->$methodToUse($match['name']);
+$controller->$methodToUse();
