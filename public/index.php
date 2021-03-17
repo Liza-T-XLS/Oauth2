@@ -30,6 +30,10 @@ switch ($requestData) {
         $controllerToUse = 'MainController';
         $methodToUse = 'secret';
         break;
+    case ['request' => '/logout', 'method' => 'GET']:
+        $controllerToUse = 'MainController';
+        $methodToUse = 'logout';
+        break;
     default:
         http_response_code(404);
         header('HTTP/1.0 404 Not Found');

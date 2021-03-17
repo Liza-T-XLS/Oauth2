@@ -18,6 +18,23 @@ header a {
   color: black;
 }
 
+.logout {
+  text-align: right;
+}
+
+.logoutLink {
+  font-size: 2rem;
+}
+
+.logoutIcon {
+  height: 2rem;
+  width: auto;
+}
+
+.logoutIcon:hover, .logoutIcon:active {
+  filter: invert(37%) sepia(93%) saturate(7471%) hue-rotate(360deg) brightness(91%) contrast(135%);
+}
+
 main {
   margin: 2rem;
   display: flex;
@@ -29,7 +46,7 @@ p {
   margin: 1rem;
 }
 
-.OauthLink {
+.OauthLink, .linkHomepage {
   display: block;
   padding: 0.5rem 1rem;
   margin: 0.5rem;
@@ -46,6 +63,10 @@ p {
 
 .OauthLink.google {
   background-color: #009688;
+}
+
+.linkHomepage {
+  background-color: green;
 }
 
 footer {
