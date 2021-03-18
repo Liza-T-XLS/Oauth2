@@ -15,7 +15,7 @@ header {
 
 header a {
   text-decoration: none;
-  color: black;
+  color:#B10609;
 }
 
 .logout {
@@ -40,6 +40,11 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.homeImg {
+  height: 15rem;
+  width: auto;
 }
 
 p {
@@ -72,4 +77,14 @@ p {
 footer {
   margin: 2rem;
   text-align: center;
+  color: #B10609;
+}
+
+footer a {
+  text-decoration: none;
+  color:#B10609;
+}
+
+footer a:hover, a:active {
+  color: black;
 }
