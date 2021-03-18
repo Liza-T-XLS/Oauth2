@@ -1,4 +1,5 @@
 <?php
+session_set_cookie_params(array('samesite' => 'Lax'));
 session_start();
 ?>
 <!DOCTYPE html>
