@@ -8,25 +8,31 @@ class MainController extends CoreController {
     $this->show('home');
   }
 
-  public function exchange() {
+  public function exchangeDiscord() {
     $client = new Client([
       'timeout' => 2.0,
     ]);
-    // access code that is in query string
+    // when the state parameter is returned, it is compared with the state previously stored in the session, if they do not match there is a CSRF risk and the script is terminated
+    session_start();
+    if($_SESSION['state'] !== $_GET['state']) {
+      http_response_code(403);
+      exit('CSRF risk, abort');
+    }
+    // else retrieves access code that is in query string
     $code = $_GET['code'];
     $tokenEndpoint = 'https://discord.com/api/oauth2/token';
-    $redirectURI = 'http://localhost:8000/connect';
+    $redirectURI = 'http://localhost:8000/connect-via-discord';
 
     try {
       // exchanging the access code for an access token
       $response = $client->request('POST', $tokenEndpoint, [
         'form_params' => [
-          'client_id' => $_ENV['CLIENT_ID'],
-          'client_secret'=> $_ENV['CLIENT_SECRET'],
+          'client_id' => $_ENV['DISCORD_CLIENT_ID'],
+          'client_secret'=> $_ENV['DISCORD_CLIENT_SECRET'],
           'grant_type'=> 'authorization_code',
           'code'=> $code,
           'redirect_uri'=> $redirectURI,
-          'scope'=> urlencode('identify email')
+          'scope'=> urlencode('identify email'),
         ]
       ]);
       $accessToken = json_decode($response->getBody())->access_token;
@@ -41,9 +47,8 @@ class MainController extends CoreController {
       $username = $response->username;
       // if username exists, it is saved in the session
       if($username) {
-        session_start();
         $_SESSION['username'] = $username;
-        header('Location: http://localhost:8000/secret');
+        header('Location: /secret');
         exit();
       }
     } catch(\GuzzleHttp\Exception\ClientException $exception) {
@@ -55,7 +60,13 @@ class MainController extends CoreController {
     $client = new Client([
       'timeout'  => 2.0,
     ]);
-    // access code that is in query string
+    // when the state parameter is returned, it is compared with the state previously stored in the session, if they do not match there is a CSRF risk and the script is terminated
+    session_start();
+    if($_SESSION['state'] !== $_GET['state']) {
+      http_response_code(403);
+      exit('CSRF risk, abort');
+    }
+    // else retrieves access code that is in query string
     $code = $_GET['code'];
 
     try {
@@ -89,7 +100,7 @@ class MainController extends CoreController {
         if ($username) {
             session_start();
             $_SESSION['username'] = $username;
-            header('Location: http://localhost:8000/secret');
+            header('Location: /secret');
             exit();
         }
     } catch(\GuzzleHttp\Exception\ClientException $exception) {

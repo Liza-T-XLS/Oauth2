@@ -18,9 +18,9 @@ switch ($requestData) {
         break;
         // expected URI is /connect?=<code provided by Discord>, so to make the route match without knowing in advance what the code will be, preg_match is used
         // if the string matches the regex, the return value is 1, else it is 0
-    case ['request' => preg_match('/\/connect\?(.*)/', $requestData['request']) == 1, 'method' => 'GET']:
+    case ['request' => preg_match('/\/connect-via-discord\?(.*)/', $requestData['request']) == 1, 'method' => 'GET']:
         $controllerToUse = 'MainController';
-        $methodToUse = 'exchange';
+        $methodToUse = 'exchangeDiscord';
         break;
     case ['request' => preg_match('/\/connect-via-google\?(.*)/', $requestData['request']) == 1, 'method' => 'GET']:
         $controllerToUse = 'MainController';
