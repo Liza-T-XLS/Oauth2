@@ -71,7 +71,15 @@ p {
 }
 
 .linkHomepage {
-  background-color: green;
+  background-color: #B10609;
+}
+
+.secretWelcome {
+  font-weight: bold;
+}
+
+.secret {
+  line-height: normal;
 }
 
 footer {
