@@ -3,8 +3,10 @@
 require_once '../vendor/autoload.php';
 
 // to enable the use of the .env
-$dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT'] . '/..');
-$dotenv->load();
+if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT'] . '/..');
+    $dotenv->load();
+}
 
 // router
 $request = $_SERVER['REQUEST_URI'];
