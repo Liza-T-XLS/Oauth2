@@ -21,7 +21,7 @@ class MainController extends CoreController {
     // else retrieves access code that is in query string
     $code = $_GET['code'];
     $tokenEndpoint = 'https://discord.com/api/oauth2/token';
-    $redirectURI = 'http://localhost:8000/connect-via-discord';
+    $redirectURI = $_ENV['DISCORD_REDIRECT_URI'];
 
     try {
       // exchanging the access code for an access token
@@ -81,7 +81,7 @@ class MainController extends CoreController {
                 'code' => $code,
                 'client_id' => $_ENV['GOOGLE_CLIENT_ID'],
                 'client_secret' => $_ENV['GOOGLE_CLIENT_SECRET'],
-                'redirect_uri' => 'http://localhost:8000/connect-via-google',
+                'redirect_uri' => $_ENV['GOOGLE_REDIRECT_URI'],
                 'grant_type' => 'authorization_code'
             ]
         ]);
