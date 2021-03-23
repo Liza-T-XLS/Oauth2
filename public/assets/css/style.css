@@ -96,3 +96,7 @@ footer a {
 footer a:hover, a:active {
   color: black;
 }
+
+i {
+  font-style: italic;
+}
