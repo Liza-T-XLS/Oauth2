@@ -108,6 +108,56 @@ class MainController extends CoreController {
     }
   }
 
+  public function exchangeGitHub() {
+    $client = new Client([
+      'timeout' => 2.0,
+    ]);
+    // when the state parameter is returned, it is compared with the state previously stored in the session, if they do not match there is a CSRF risk and the script is terminated
+    session_start();
+    if($_SESSION['state'] !== $_GET['state']) {
+      http_response_code(403);
+      exit('CSRF risk, abort');
+    }
+    // else retrieves access code that is in query string
+    $code = $_GET['code'];
+    $tokenEndpoint = 'https://github.com/login/oauth/access_token';
+    $redirectURI = $_ENV['GITHUB_REDIRECT_URI'];
+
+    try {
+      // exchanging the access code for an access token
+      $response = $client->request('POST', $tokenEndpoint, [
+        'form_params' => [
+          'client_id' => $_ENV['GITHUB_CLIENT_ID'],
+          'client_secret'=> $_ENV['GITHUB_CLIENT_SECRET'],
+          'code'=> $code,
+          'redirect_uri'=> $redirectURI,
+          'state'=> $_GET['state'],
+        ],
+        'headers' => [
+          'Accept'     => 'application/json',
+        ]
+      ]);
+      $accessToken = json_decode($response->getBody())->access_token;
+
+      // if the exchange is successful, calling the API endpoint with the access token
+      $response = $client->request('GET', 'https://api.github.com/user', [
+        'headers' => [
+          'Authorization' => 'token ' . $accessToken
+        ]
+      ]);
+      $response = json_decode($response->getBody());
+      $username = $response->login;
+      // if username exists, it is saved in the session
+      if($username) {
+        $_SESSION['username'] = $username;
+        header('Location: /secret');
+        exit();
+      }
+    } catch(\GuzzleHttp\Exception\ClientException $exception) {
+        exit($exception->getMessage());
+    }
+  }
+
   public function secret() {
     $this->show('secret');
   }

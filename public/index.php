@@ -28,6 +28,10 @@ switch ($requestData) {
         $controllerToUse = 'MainController';
         $methodToUse = 'exchangeGoogle';
         break;
+    case ['request' => preg_match('/\/connect-via-github\?(.*)/', $requestData['request']) == 1, 'method' => 'GET']:
+        $controllerToUse = 'MainController';
+        $methodToUse = 'exchangeGitHub';
+        break;
     case ['request' => '/secret', 'method' => 'GET']:
         $controllerToUse = 'MainController';
         $methodToUse = 'secret';
